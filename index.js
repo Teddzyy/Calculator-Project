@@ -8,6 +8,7 @@ const symbolsString = validSymbols.join(' ');
 function performCalculation(symbolInput, numberInput1, numberInput2) {
 
   switch (symbolInput) {
+    
     case "x":
       return numberInput1 * numberInput2;
 
