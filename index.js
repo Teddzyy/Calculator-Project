@@ -1,42 +1,68 @@
 const prompt = require('prompt-sync')();
-const symbols = "x + - /";
 
-console.log("Calculator initialized, Symbols are:", symbols);
+let calculationHistory = [];
 
-let reset = prompt('Would you like to do a calculation? (yes / no)');
+const validSymbols = ["x", "+", "-", "/"];
+const symbolsString = validSymbols.join(' ');
 
-while (reset === 'yes') {
-  const promptt = prompt('Enter one of the symbols above:');
+let reset = prompt('Would you like to do a calculation? (y/n):');
+console.log(symbolsString);
 
-  let num1 = Number(prompt("Enter the first number: "));
-  let num2 = Number(prompt("Enter the second number: "));
+
+
+while (reset === 'y') {
+  const symbolInput = prompt('Enter one of the symbols above:');
+
+  let numberInput1 = Number(prompt("Enter the first number: "));
+  let numberInput2 = Number(prompt("Enter the second number: "));
 
   try {
     let result; 
 
-    if (promptt === "x") {
-      result = num1 * num2; 
+    if (!validSymbols.includes(symbolInput)) {
+        console.log("Invalid symbol");
+        reset = prompt('Would you like to do another calculation? (y/n)');
+        continue; 
+      }
+
+    if (symbolInput === "x") {
+      result = numberInput1 * numberInput2; 
       
-    } else if (promptt === "+") {
-      result = num1 + num2; 
+    } else if (symbolInput === "+") {
+      result = numberInput1 + numberInput2; 
       
-    } else if (promptt === "-") {
-      result = num1 - num2; 
+    } else if (symbolInput === "-") {
+      result = numberInput1 - numberInput2; 
       
-    } else if (promptt === "/") {
-      result = num1 / num2; 
+    } else if (symbolInput === "/") {
+        
+        if (numberInput2 === 0) {
+
+            console.log("Error: Division by zero end up with the same number.");
+            reset = prompt('Would you like to do another calculation? (y/n)');
+            continue; 
+          }
+
+      result = numberInput1 / numberInput2; 
       
-    } else {
-      console.log("Invalid symbol");
-    }
+    } 
 
     if (result !== undefined) { 
       console.log(result); 
+
+      calculationHistory.push(`${numberInput1} ${symbolInput} ${numberInput2} = ${result}`);
     }
-    reset = prompt('Would you like to do another calculation? (yes / no)');
+
+    const viewHistory = prompt('Do you want to view calculation history? (y/n)');
+
+    if (viewHistory.toLowerCase() === 'y') {
+
+      console.log('Calculation History:', calculationHistory.join('\n'));
+    }
+    
   } catch(err) {
+
     console.log("oopsie", err);
-    reset = prompt('Would you like to do another calculation? (yes / no)');
   }
 }
-console.log('Goodbye!');
+console.log('Calculation ended, thank you for using the calculator!');
